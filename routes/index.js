@@ -12,7 +12,8 @@ router.use('/auth', authRoutes);   // Ruta para autenticación
 
 // Ruta raíz
 router.get('/', (req, res) => {
-  res.send('¡Bienvenido a mi API!');
+  //res.send('¡Bienvenido a mi API!');
+  res.render("index1")
 });
 
 module.exports = router;

@@ -5,6 +5,8 @@ const routes = require('./routes');  // Importamos las rutas centralizadas
 
 const app = express();
 const port = process.env.PORT || 3000;
+//motor de vista
+app.set('view engine', 'ejs');
 
 // Cargar variables de entorno
 dotenv.config();
