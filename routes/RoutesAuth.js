@@ -1,14 +1,15 @@
-// routes/auth.js
 const express = require('express');
 const router = express.Router();
+const authController = require('../controllers/authController');
 
-// Aquí agregamos las rutas relacionadas con la autenticación
-router.post('/login', (req, res) => {
-  res.send('Iniciar sesión');
-});
+// Rutas de autenticación
+router.post('/register', authController.register);
+router.post('/login', authController.login);
 
-router.post('/register', (req, res) => {
-  res.send('Registrar usuario');
+// Ruta protegida (requiere token)
+router.get('/protected', authController.verifyToken, (req, res) => {
+  res.status(200).json({ message: 'Acceso permitido', user: req.user });
 });
 
 module.exports = router;
+
