@@ -1,33 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index de Prueba</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-        a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Aplicación</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>¡Bienvenido al Index de Prueba!</h1>
-    <p>Este es un archivo HTML simple para pruebas.</p>
-    <a href="https://www.example.com" target="_blank">Ir a ejemplo.com</a>
+  <!-- Incluir el navbar -->
+  <%- include('partials/navbar') %> <!-- Corregir aquí -->
+    
+    <!-- Mostrar el mensaje si existe -->
+    <% if (message) { %>
+        <div class="alert">
+          <p><%= message %></p>
+        </div>
+      <% } %>
+
+  <% if (user) { %>
+    <h2>Usuario creado:</h2>
+    <p>ID: <%= user.id %></p>
+    <p>Usuario: <%= user.usuario %></p>
+    <p>Contraseña: <%= user.pass %></p>
+  <% } %>
+
+  <h1>Bienvenido a la página principal</h1>
+  <p>Aquí va el contenido principal de la página.</p>
 </body>
 </html>
