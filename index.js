@@ -1,11 +1,14 @@
 import 'dotenv/config'
 import express from 'express';
-
+import userRouter from './routes/user.route.js'
 const app = express();
 
-app.get('/', (req,res) => {
-    res.send('hola mundo')
-})
+//middlewares
+app.use(express.json())
+app.use(express.urlencoded({ extended: true}))
+
+//ruta
+app.use('/api/v1/users', userRouter)
 
 const PORT = process.env.PORT || 3000;
 
