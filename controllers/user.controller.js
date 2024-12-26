@@ -6,7 +6,7 @@ import {UserModel} from '../models/user.model.js'
 const register = async(req, res) => {
     try {
         const {username, email, password} = req.body
-        //console.log(req.body)
+        console.log(req.body)
 
         //validacion
         if(!username || !email || !password){
@@ -16,7 +16,7 @@ const register = async(req, res) => {
         //
         const user = await UserModel.findOnebyEmail(email)
         if(user){
-            return res.status(409).json({ok: false, msg: "email ya existe"})
+            return res.status(409).json({ok: false, msg: "Email already exists"})
         }
 
         const salt = await bcryptjs.genSalt(10) //genera saltos para que los hash no sean iguales en caso de ser iguales pw
@@ -36,7 +36,13 @@ const register = async(req, res) => {
         return res.status(201).json({ok: true, msg: token})
 
     } catch (error) {
+        // if (error.message === 'Email already exists') {
+        //     return res.status(409).json({ ok: false, msg: error.message });
+        // }
+        
+        
         console.log(error)
+
         return res.status(500).json({
             ok: false,
             msg: 'Error server'

@@ -11,8 +11,8 @@ const create = async({email, password, username}) => {
         values: [email, password, username]
     }
 
-    const {} = await db.query(query)
-    return rows
+    const { rows } = await db.query(query)
+    return rows[0]
 }
 
 const findOnebyEmail = async(email) => {
@@ -23,6 +23,8 @@ const findOnebyEmail = async(email) => {
         `,
         values: [email]
     }
+    const { rows } = await db.query(query)
+    return rows[0]
 }
 
 export const UserModel = {
