@@ -1,10 +1,12 @@
+import bcryptjs from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import {UserModel} from '../models/user.model.js'
 
 // ruta   /api/v1/users/register
 const register = async(req, res) => {
     try {
         const {username, email, password} = req.body
-        console.log(req.body)
+        //console.log(req.body)
 
         //validacion
         if(!username || !email || !password){
@@ -17,9 +19,21 @@ const register = async(req, res) => {
             return res.status(409).json({ok: false, msg: "email ya existe"})
         }
 
-        const newUser = await UserModel.create({email, password, username})
+        const salt = await bcryptjs.genSalt(10) //genera saltos para que los hash no sean iguales en caso de ser iguales pw
+        const hashedPassword = await bcryptjs.hash(password, salt)
 
-        return res.status(201).json({ok: true, msg: "user ok"})
+        const newUser = await UserModel.create({email, password: hashedPassword, username})
+
+        const token = jwt.sign({
+            email: newUser.email
+        },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1h"
+            }
+        )
+
+        return res.status(201).json({ok: true, msg: token})
 
     } catch (error) {
         console.log(error)
