@@ -1,13 +1,16 @@
 import 'dotenv/config'
 import express from 'express';
 import userRouter from './routes/user.route.js'
+import publicRouter from './routes/public.route.js'
 const app = express();
 
 //middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
+app.use(express.static('public'))
 
 //ruta
+app.use('/', publicRouter)
 app.use('/api/v1/users', userRouter)
 
 const PORT = process.env.PORT || 3000;
