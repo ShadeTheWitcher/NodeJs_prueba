@@ -17,11 +17,14 @@ const SECRET_KEY = process.env.JWT_SECRET
  * @param {Response} res
  */
 export const register = async (req, res) => {
-  const { usuario, pass, correo } = req.body; // Asegúrate de que se envíen todos estos campos
+  const { usuario, pass, correo } = req.body; // Obtener datos del cuerpo de la solicitud
+
+  // Crear un objeto con los datos del usuario
+  const userData = { usuario, pass, correo, rol };
 
   try {
     // Crea el nuevo usuario
-    const newUser = await createUser(usuario, pass, correo); //se llama a la funcion createUser del controllador de users
+    const newUser = await createUser(userData); //se llama a la funcion createUser del controllador de users
 
     // Generar el token JWT para el usuario
     const token = jwt.sign(

@@ -14,31 +14,38 @@ const users = []; // Simulación de base de datos temporal
  * @param {Request} req
  * @param {Response} res
  */
-export const createUser = async (usuario, pass, correo, rol = 2) => {
-  // Verificar si el usuario ya existe
-  const userExists = await prisma.usuarios.findUnique({
-    where: { usuario },
-  });
+export const createUser = async (req, res) => {
+  const { usuario, pass, correo, rol = 2 } = req.body;
 
-  if (userExists) {
-    throw new Error('El usuario ya existe');
+  try {
+    // Verificar si el usuario ya existe
+    const userExists = await prisma.usuarios.findUnique({
+      where: { usuario },
+    });
+
+    if (userExists) {
+      return res.status(400).json({ error: 'El usuario ya existe' });
+    }
+
+    // Cifrar la contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(pass, salt);
+
+    // Crear el usuario en la base de datos
+    const newUser = await prisma.usuarios.create({
+      data: {
+        usuario,
+        correo,
+        pass: hashedPassword,
+        rol,
+      },
+    });
+
+    // Responder con el nuevo usuario
+    res.status(201).json(newUser);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al crear el usuario', details: err.message });
   }
-
-  // Cifrar la contraseña
-  const salt = await bcrypt.genSalt(10); // Generar saltos para que los hash no sean iguales
-  const hashedPassword = await bcrypt.hash(pass, salt);
-
-  // Crear el usuario en la base de datos
-  const newUser = await prisma.usuarios.create({
-    data: {
-      usuario,
-      correo,
-      pass: hashedPassword,
-      rol,
-    },
-  });
-
-  return newUser;
 };
 
 
