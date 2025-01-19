@@ -20,18 +20,29 @@ router.get('/api/pokemon/:name', async (req, res) => {
 });
 
 //ruta para ver pokemon en view
-router.get('/pokemon/:name', async (req, res) => {
-  const { name } = req.params;
+router.get('/pokemon', async (req, res) => {
+  const name = req.query.name;
+  if (!name) return res.render('buscarPoke', { pokemon: null });
+
+  const url = `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`;
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    if (!response.ok) throw new Error(`Error: ${response.status}`);
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Pokémon no encontrado');
 
     const data = await response.json();
-    res.render('pokemon', { pokemon: data });
+    res.render('buscarPoke', {
+      pokemon: {
+        name: data.name,
+        id: data.id,
+        height: data.height,
+        sprite: data.sprites.front_default,
+      },
+    });
   } catch (error) {
-    res.render('pokemon', { pokemon: null, error: error.message });
+    res.render('buscarPoke', { pokemon: null });
   }
 });
+
 
 
 

@@ -3,8 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Aplicación</title>
-  <link rel="stylesheet" href="/styles.css">
+  <title>Mi Aplicación Pokémon</title>
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f8e040, #f7d030);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1, h2 {
+      color: #3b4cca;
+      text-shadow: 1px 1px #ffcc00;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+
+    .alert {
+      background-color: #ffdd57;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      font-weight: bold;
+      color: #3b4cca;
+      text-align: center;
+      width: 90%;
+    }
+
+    /* Navbar */
+    nav {
+      width: 100%;
+      background: #3b4cca;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 1.2rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Cards de Pokémon */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      width: 200px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      padding: 10px;
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      color: #3b4cca;
+    }
+  </style>
 </head>
 <body>
   <!-- Incluir el navbar -->
@@ -24,7 +105,32 @@
     <p>Contraseña: <%= user.pass %></p>
   <% } %>
 
-  <h1>Bienvenido a la página principal</h1>
-  <p>Aquí va el contenido principal de la página.</p>
+  <!-- Contenido principal -->
+  <h1>Bienvenido a la página Pokémon</h1>
+  <p>¡Explora algunos Pokémon!</p>
+
+  <!-- Cards de Pokémon -->
+  <div class="cards">
+    <div class="card">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu">
+      <h3>Pikachu</h3>
+      <p>Tipo: Eléctrico</p>
+    </div>
+    <div class="card">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt="Charmander">
+      <h3>Charmander</h3>
+      <p>Tipo: Fuego</p>
+    </div>
+    <div class="card">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="Bulbasaur">
+      <h3>Bulbasaur</h3>
+      <p>Tipo: Planta/Veneno</p>
+    </div>
+    <div class="card">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" alt="Squirtle">
+      <h3>Squirtle</h3>
+      <p>Tipo: Agua</p>
+    </div>
+  </div>
 </body>
 </html>

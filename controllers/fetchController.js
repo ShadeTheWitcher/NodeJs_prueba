@@ -1,4 +1,4 @@
-const fetch = require('node-fetch'); // Si usas Node.js < 18, instala node-fetch
+
 
 exports.getPokemon = async (req, res) => {
   try {
