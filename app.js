@@ -5,6 +5,7 @@ import methodOverride from 'method-override';
 import path from 'path';
 import routes from './routes/IndexRutas.js'; // Importar rutas centralizadas
 import { fileURLToPath } from 'url';
+import bodyParser from 'body-parser';
 
 
 // Configuración de rutas y directorios
@@ -24,6 +25,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Middlewares
 app.use(express.json()); // Middleware para parsear JSON
 app.use(express.urlencoded({ extended: true })); // Middleware para datos de formularios
+app.use(bodyParser.json()); // Middleware para parsear JSON en las solicitudes
 
 // Usar las rutas centralizadas
 app.use('/', routes);

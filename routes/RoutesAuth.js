@@ -14,4 +14,9 @@ router.get('/protected', verifyToken, (req, res) => {
   res.status(200).json({ message: 'Acceso permitido', user: req.user });
 });
 
+router.get('/profile', verifyToken, (req, res) => {
+  // Esta ruta ahora está protegida
+  res.json({ message: 'Perfil de usuario', user: req.user });
+});
+
 export default router;
