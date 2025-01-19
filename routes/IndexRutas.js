@@ -1,14 +1,12 @@
-// routes/index.js
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import userRoutes from './RoutesUsers.js';
+import authRoutes from './RoutesAuth.js';
 
-// Importar las rutas de usuarios y autenticación
-const userRoutes = require('./RoutesUsers');
-const authRoutes = require('./RoutesAuth');
+const router = Router();
 
 // Definir las rutas
-router.use('/users', userRoutes);  // Ruta para usuarios
-router.use('/auth', authRoutes);   // Ruta para autenticación
+router.use('/users', userRoutes); // Ruta para usuarios
+router.use('/auth', authRoutes); // Ruta para autenticación
 
 // Ruta raíz
 router.get('/', (req, res) => {
@@ -16,4 +14,4 @@ router.get('/', (req, res) => {
   res.render("index1", { message: null, user: null });
 });
 
-module.exports = router;
+export default router;

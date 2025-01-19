@@ -1,15 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const authController = require('../controllers/authController');
+//routesAuth.js
+import { Router } from 'express';
+import { AuthController } from '../controllers/authController.js';
+import { verifyToken } from '../middlewares/jwt.middlware.js';
+
+const router = Router();
 
 // Rutas de autenticación
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/register', AuthController.register);
+router.post('/login', AuthController.login);
 
 // Ruta protegida (requiere token)
-router.get('/protected', authController.verifyToken, (req, res) => {
+router.get('/protected', verifyToken, (req, res) => {
   res.status(200).json({ message: 'Acceso permitido', user: req.user });
 });
 
-module.exports = router;
-
+export default router;

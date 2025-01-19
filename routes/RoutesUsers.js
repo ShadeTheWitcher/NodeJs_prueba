@@ -1,13 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
+//routesUsers.js
+import { Router } from 'express';
+import { UserController } from '../controllers/userController.js';
+
+const router = Router();
 
 // Rutas CRUD
-router.get('/', userController.getAllUsers);          // Obtener todos los usuarios
-router.get('/:id', userController.getUserById);       // Obtener un usuario por ID
-router.post('/createUser', userController.createUser);          // Crear un nuevo usuario
-router.put('/update/:id', userController.updateUser);        // Actualizar un usuario
-router.delete('/delete/:id', userController.deleteUser);     // Eliminar un usuario
+router.get('/', UserController.getAllUsers); // Obtener todos los usuarios
+router.get('/:id', UserController.getUserById); // Obtener un usuario por ID
+router.post('/createUser', UserController.createUser); // Crear un nuevo usuario
+router.put('/update/:id', UserController.updateUser); // Actualizar un usuario
+router.delete('/delete/:id', UserController.deleteUser); // Eliminar un usuario
 
-module.exports = router;
-
+export default router;

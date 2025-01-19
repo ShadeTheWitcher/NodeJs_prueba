@@ -1,26 +1,51 @@
-const { PrismaClient } = require('@prisma/client');
+//userController.js
+
+// Importar PrismaClient
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 // Crear un usuario
-exports.createUser = async (req, res) => {
-  const { usuario, pass } = req.body;
+// userController.js
+const users = []; // Simulación de base de datos temporal
 
-  try {
-    const newUser = await prisma.usuarios.create({
-      data: { usuario, pass },
-    });
+/**
+ * Crear un nuevo usuario
+ * @param {Request} req
+ * @param {Response} res
+ */
+export const createUser = async (usuario, pass, correo, rol = 2) => {
+  // Verificar si el usuario ya existe
+  const userExists = await prisma.usuarios.findUnique({
+    where: { usuario },
+  });
 
-    // Redirigir a la página de usuarios, pasando el mensaje y el usuario creado
-    res.render('index1', { message: 'Usuario creado', user: newUser });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al crear usuario', details: error.message });
+  if (userExists) {
+    throw new Error('El usuario ya existe');
   }
+
+  // Cifrar la contraseña
+  const salt = await bcrypt.genSalt(10); // Generar saltos para que los hash no sean iguales
+  const hashedPassword = await bcrypt.hash(pass, salt);
+
+  // Crear el usuario en la base de datos
+  const newUser = await prisma.usuarios.create({
+    data: {
+      usuario,
+      correo,
+      pass: hashedPassword,
+      rol,
+    },
+  });
+
+  return newUser;
 };
 
 
 
+
 // Leer todos los usuarios
-exports.getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
     const usuarios = await prisma.usuarios.findMany();
     res.render('usersAdmin', { usuarios }); // Renderiza la vista con la lista de usuarios
@@ -31,7 +56,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // Leer un usuario por ID
-exports.getUserById = async (req, res) => {
+const getUserById = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -50,14 +75,17 @@ exports.getUserById = async (req, res) => {
 };
 
 // Actualizar un usuario
-exports.updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { usuario, pass } = req.body;
+  const { usuario, pass, role } = req.body;
+
+  // Validar que el rol sea un número válido (1 para admin, 2 para usuario común)
+  const userRole = (role === 1 || role === 2) ? role : 2; // Si no se especifica, por defecto se asigna rol 2
 
   try {
-    const updatedUser = await prisma.usuarios.update({
+    const updatedUser = await prisma.usuario.update({
       where: { id: parseInt(id) },
-      data: { usuario, pass },
+      data: { usuario, pass, role: userRole },
     });
 
     res.json({ message: 'Usuario actualizado', user: updatedUser });
@@ -67,7 +95,7 @@ exports.updateUser = async (req, res) => {
 };
 
 // Eliminar un usuario
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -80,4 +108,13 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error al eliminar usuario', details: error.message });
   }
+};
+
+// Exportar todas las funciones como un objeto
+export const UserController = {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
 };

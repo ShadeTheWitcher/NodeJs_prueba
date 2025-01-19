@@ -1,33 +1,49 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+//authController.js
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { createUser } from './userController.js'; // Importar createUser
 
 const users = []; // Simulación de base de datos temporal
 
 // Clave secreta para firmar los tokens (debe estar en variables de entorno en producción)
-const SECRET_KEY = 'mi_secreto_super_seguro';
+const SECRET_KEY = process.env.JWT_SECRET
 
-// Registrar un nuevo usuario
-exports.register = async (req, res) => {
-  const { usuario, pass } = req.body;
+/**
+ * Registrar un nuevo usuario
+ * @param {Request} req
+ * @param {Response} res
+ */
+export const register = async (req, res) => {
+  const { usuario, pass, correo } = req.body; // Asegúrate de que se envíen todos estos campos
 
-  // Verificar si el usuario ya existe
-  const userExists = users.find(u => u.usuario === usuario);
-  if (userExists) {
-    return res.status(400).json({ message: 'El usuario ya existe' });
+  try {
+    // Crea el nuevo usuario
+    const newUser = await createUser(usuario, pass, correo); //se llama a la funcion createUser del controllador de users
+
+    // Generar el token JWT para el usuario
+    const token = jwt.sign(
+      { id: newUser.id, usuario: newUser.usuario }, 
+      SECRET_KEY, 
+      { expiresIn: '1h' } // El token expira en 1 hora
+    );
+
+    // Responder con los datos del usuario y el token
+    res.status(201).json({
+      message: 'Usuario registrado',
+      user: newUser,
+      token, // Se incluye el token generado
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
-
-  // Cifrar la contraseña
-  const hashedPassword = await bcrypt.hash(pass, 10);
-
-  // Guardar el usuario
-  const newUser = { id: users.length + 1, usuario, pass: hashedPassword };
-  users.push(newUser);
-
-  res.status(201).json({ message: 'Usuario registrado', user: newUser });
 };
 
-// Iniciar sesión
-exports.login = async (req, res) => {
+/**
+ * Iniciar sesión
+ * @param {Request} req
+ * @param {Response} res
+ */
+export const login = async (req, res) => {
   const { usuario, pass } = req.body;
 
   // Buscar el usuario
@@ -50,19 +66,11 @@ exports.login = async (req, res) => {
   res.status(200).json({ message: 'Inicio de sesión exitoso', token });
 };
 
-// Verificar el token
-exports.verifyToken = (req, res, next) => {
-  const token = req.headers['authorization'];
 
-  if (!token) {
-    return res.status(403).json({ message: 'Token no proporcionado' });
-  }
 
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    req.user = decoded; // Guardar los datos del usuario en el request
-    next(); // Continuar con la siguiente función
-  } catch (error) {
-    return res.status(401).json({ message: 'Token inválido o expirado' });
-  }
+// Exportar todas las funciones como un objeto
+export const AuthController = {
+  register,
+  login,
+  
 };

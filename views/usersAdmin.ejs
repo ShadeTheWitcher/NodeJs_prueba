@@ -18,7 +18,7 @@
       <tr>
         <th>ID</th>
         <th>Usuario</th>
-        <th>Contraseña</th>
+        <th>Correo</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -28,7 +28,7 @@
           <tr>
             <td><%= user.id %></td>
             <td><%= user.usuario %></td>
-            <td><%= user.pass %></td>
+            <td><%= user.correo %></td>
             <td>
               <!-- Botón para eliminar -->
               <form action="/users/delete/<%= user.id %>?_method=DELETE" method="POST" style="display:inline;">

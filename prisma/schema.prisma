@@ -16,6 +16,8 @@ datasource db {
 
 model usuarios {
   id        Int    @id @default(autoincrement())
-  usuario    String
+  usuario    String @unique
+  correo  String @unique
   pass  String
+  rol Int @default(2)
 }
