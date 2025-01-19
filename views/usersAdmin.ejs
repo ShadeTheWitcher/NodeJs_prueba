@@ -4,58 +4,177 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Usuarios</title>
+  <style>
+    /* Estilo general */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    h1, h2 {
+      color: #5c6bc0;
+    }
+
+    /* Contenedor principal */
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Navbar */
+    nav {
+      background-color: #5c6bc0;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      margin: 0 10px;
+      font-size: 18px;
+    }
+
+    nav a:hover {
+      background-color: #3f51b5;
+      border-radius: 5px;
+    }
+
+    /* Estilo para la tabla */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #5c6bc0;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Estilo para el formulario */
+    form {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    form button {
+      background-color: #5c6bc0;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    form button:hover {
+      background-color: #3f51b5;
+    }
+
+    /* Botón eliminar */
+    button[type="submit"] {
+      background-color: #f44336;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #d32f2f;
+    }
+
+  </style>
 </head>
 <body>
   <!-- Incluir el navbar -->
   <%- include('partials/navbar') %>
 
-  <h1>Gestión de Usuarios</h1>
+  <div class="container">
+    <h1>Gestión de Usuarios</h1>
 
-  <!-- Lista de Usuarios -->
-  <h2>Usuarios Registrados</h2>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Correo</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if (usuarios.length > 0) { %>
-        <% usuarios.forEach((user) => { %>
-          <tr>
-            <td><%= user.id %></td>
-            <td><%= user.usuario %></td>
-            <td><%= user.correo %></td>
-            <td>
-              <!-- Botón para eliminar -->
-              <form action="/users/delete/<%= user.id %>?_method=DELETE" method="POST" style="display:inline;">
-                <button type="submit">Eliminar</button>
-              </form>
-              
-            </td>
-          </tr>
-        <% }); %>
-      <% } else { %>
+    <!-- Lista de Usuarios -->
+    <h2>Usuarios Registrados</h2>
+    <table>
+      <thead>
         <tr>
-          <td colspan="4">No hay usuarios registrados.</td>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Correo</th>
+          <th>Acciones</th>
         </tr>
-      <% } %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% if (usuarios.length > 0) { %>
+          <% usuarios.forEach((user) => { %>
+            <tr>
+              <td><%= user.id %></td>
+              <td><%= user.usuario %></td>
+              <td><%= user.correo %></td>
+              <td>
+                <!-- Botón para eliminar -->
+                <form action="/users/delete/<%= user.id %>?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="4">No hay usuarios registrados.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
 
-  <!-- Formulario para agregar usuario -->
-  <h2>Agregar Nuevo Usuario</h2>
-  <form action="/users/createUser" method="POST">
-    <label for="usuario">Usuario:</label>
-    <input type="text" name="usuario" id="usuario" required>
-    <br>
-    <label for="pass">Contraseña:</label>
-    <input type="password" name="pass" id="pass" required>
-    <br>
-    <button type="submit">Agregar Usuario</button>
-  </form>
-</body>
-</html>
+    <!-- Formulario para agregar usuario -->
+    <h2>Agregar Nuevo Usuario</h2>
+    <form action="/users/createUser" method="POST">
+      <label for="usuario">Usuario:</label>
+      <input type="text" name="usuario" id="usuario" required>
+
+      <label for="correo">Correo:</label>
+      <input type="email" name="correo" id="correo" required>
+
+      <label for="pass">Contraseña:</label>
+      <input type="password" name="pass" id="pass" required>
+
+      <button type="submit">Agregar Usuario</button>
+

@@ -1,0 +1,157 @@
+<!-- login.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+ 
+  <style>
+    /* Estilos generales del formulario */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      color: #333;
+    }
+
+    .container {
+      display: grid;
+      place-items: center;
+      justify-content: center;
+      align-items: center;
+      height: 10vh;
+      padding: 5px;
+    }
+
+    .login-form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-form h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .login-form label {
+      display: block;
+      font-size: 16px;
+      display: flex;
+      color: #555;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 10px;
+      padding-left: 30px;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      margin: 10px ;
+      margin-left: 10;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      max-width: 200px
+    }
+
+    .login-form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #5c6bc0;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login-form button:hover {
+      background-color: #3f51b5;
+    }
+
+    .login-form .error {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* Estilos para el navbar */
+    nav {
+      background-color: #5c6bc0;
+      padding: 10px 20px;
+      border-bottom: 2px solid #3f51b5;
+    }
+
+    .navbar {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar li {
+      margin: 0 20px;
+    }
+
+    .navbar-link {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar-link:hover {
+      background-color: #3f51b5;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Incluir el navbar -->
+  <%- include('partials/navbar') %>
+
+  <h1 class="h1-1">Iniciar Sesión</h1>
+
+  <div class="container">
+    <div class="login-form">
+      <h2>Bienvenido de nuevo</h2>
+      
+      <!-- Formulario de login -->
+      <form action="/auth/login" method="POST">
+        <label for="usuario">Usuario:</label>
+        <input type="text" name="usuario" id="usuario" required>
+        
+        <label for="pass">Contraseña:</label>
+        <input type="password" name="pass" id="pass" required>
+        
+        <button type="submit">Iniciar sesión</button>
+      </form>
+
+      <!-- Mensaje de error (si lo hay) -->
+      <% if (error) { %>
+        <p class="error"><%= error %></p>
+      <% } %>
+    </div>
+  </div>
+  
+</body>
+</html>

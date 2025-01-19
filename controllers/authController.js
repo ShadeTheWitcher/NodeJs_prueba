@@ -86,10 +86,17 @@ export const login = async (req, res) => {
 };
 
 
+const viewLogin = (req, res) => {
+  const error = req.query.error || null; // Si hay un error, lo tomamos de la query string
+  res.render('login', { error });
+};
+
+
 
 // Exportar todas las funciones como un objeto
 export const AuthController = {
   register,
   login,
+  viewLogin,
   
 };

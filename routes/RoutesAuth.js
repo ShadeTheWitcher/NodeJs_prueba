@@ -5,6 +5,8 @@ import { verifyToken } from '../middlewares/jwt.middlware.js';
 
 const router = Router();
 
+router.get('/', AuthController.viewLogin )
+
 // Rutas de autenticación
 router.post('/register', AuthController.register);
 router.post('/login', AuthController.login);
